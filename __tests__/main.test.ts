@@ -110,3 +110,16 @@ test('Result null check', () => {
   expect(result)
   .toStrictEqual('prefix_special-name:1.0.0-alpha.0');
 });
+
+test('Result full', () => {
+  const given = 'prefix:1.2.1:suffix';
+
+  const extracted = util.version(given);
+
+  expect( util.result({
+    prefix: extracted.prefix as string,
+    suffix: extracted.suffix,
+    version: extracted.version
+  }, {prefix: true, suffix: true}))
+  .toStrictEqual('prefix:1.2.1:suffix');
+})

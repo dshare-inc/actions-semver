@@ -43,7 +43,7 @@ function run() {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const version = core.getInput('version', { required: false });
+            const version = core.getInput('version', { required: false }) === '' ? '0.0.1' : core.getInput('version', { required: false });
             const method = core.getInput('method', { required: true });
             const options = {
                 prefix: core.getInput('return_with_prefix', { required: false }) === 'true',
@@ -61,7 +61,11 @@ function run() {
             if (method.match(/^(major|minor|patch|alpha|beta)$/) === null) {
                 throw new Error(`Invalid Method! ${method}`);
             }
-            core.setOutput('version', semver.inc(util_1.result(extracted, options), method));
+            core.setOutput('version', util_1.result({
+                version: semver.inc(extracted.version, method),
+                prefix: extracted.prefix,
+                suffix: extracted.suffix
+            }, options));
         }
         catch (error) {
             core.setFailed(`🚨 ${error.message}`);

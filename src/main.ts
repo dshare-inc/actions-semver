@@ -5,7 +5,8 @@ import {ReleaseType} from "semver";
 
 async function run(): Promise<void> {
   try {
-    const version = core.getInput('version', {required: false});
+    const version = core.getInput('version', {required: false}) === '' ? '0.0.1' : core.getInput('version', {required: false});
+
     const method = core.getInput('method', {required: true});
     const options = {
       prefix: core.getInput('return_with_prefix', {required: false}) === 'true',
@@ -28,7 +29,11 @@ async function run(): Promise<void> {
       throw new Error(`Invalid Method! ${method}`);
     }
 
-    core.setOutput('version', semver.inc(result(extracted, options), method as ReleaseType));
+    core.setOutput('version', result({
+      version: semver.inc(extracted.version, method as ReleaseType) as string,
+      prefix: extracted.prefix,
+      suffix: extracted.suffix
+    }, options));
   } catch (error) {
     core.setFailed(`🚨 ${error.message}`);
   }
