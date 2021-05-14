@@ -1,28 +1,103 @@
-import {wait} from '../src/wait'
-import * as process from 'process'
-import * as cp from 'child_process'
-import * as path from 'path'
+import * as semver from 'semver';
+import * as util from '../src/util';
 
-test('throws invalid number', async () => {
-  const input = parseInt('foo', 10)
-  await expect(wait(input)).rejects.toThrow('milliseconds not a number')
+test('Bump major version', async () => {
+  console.log('asdasd:1.0.0:zzzz'.match(/^(?<prefix>[A-z0-9]+:)(?<version>.*.?)(?<suffix>:[A-z0-9]+)$/));
+  console.log(semver.inc('1.0.0', 'major'));
+});
+
+describe('Prefix & Suffix', () => {
+  test('🚛 Get Prefix', async () => {
+    const given = 'prefix_name:1.0.0';
+
+    const result = util.version(given);
+
+    expect(result)
+    .toStrictEqual({
+      prefix: 'prefix_name',
+      version: '1.0.0',
+      suffix: null
+    });
+  });
+
+  test('🚛 Get Suffix', async () => {
+    const given = '1.0.0:suffix_name';
+
+    const result = util.version(given);
+
+    expect(result)
+    .toStrictEqual({
+      prefix: null,
+      version: '1.0.0',
+      suffix: 'suffix_name'
+    });
+  });
+
+  test('🚛 Get Prefix & Suffix', async () => {
+    const given = 'prefix_name:1.0.0:suffix_name';
+
+    const result = util.version(given);
+
+    expect(result)
+    .toStrictEqual({
+      prefix: 'prefix_name',
+      version: '1.0.0',
+      suffix: 'suffix_name'
+    });
+  });
+
+  test('🚛 Get Prefix with underbar', async () => {
+    const given = 'prefix_name:1.0.0';
+
+    const result = util.version(given);
+
+    expect(result)
+    .toStrictEqual({
+      prefix: 'prefix_name',
+      version: '1.0.0',
+      suffix: null
+    });
+  });
+
+  test('🚛 Get Prefix with dash', async () => {
+    const given = 'prefix-name:1.0.0';
+
+    const result = util.version(given);
+
+    expect(result)
+    .toStrictEqual({
+      prefix: 'prefix-name',
+      version: '1.0.0',
+      suffix: null
+    });
+  });
+
+  test('🚛 Get Suffix with dash', async () => {
+    const given = '1.0.0:suffix-dash';
+
+    const result = util.version(given);
+
+    expect(result)
+    .toStrictEqual({
+      prefix: null,
+      version: '1.0.0',
+      suffix: 'suffix-dash'
+    });
+  });
+
+  test('🚛 Get Special characters in version with prefix', async () => {
+    const given = 'prefix_special-name:1.0.0-alpha.0';
+
+    const result = util.version(given);
+
+    expect(result)
+    .toStrictEqual({
+      prefix: 'prefix_special-name',
+      version: '1.0.0-alpha.0',
+      suffix: null,
+    });
+  });
 })
 
-test('wait 500 ms', async () => {
-  const start = new Date()
-  await wait(500)
-  const end = new Date()
-  var delta = Math.abs(end.getTime() - start.getTime())
-  expect(delta).toBeGreaterThan(450)
-})
 
-// shows how the runner will run a javascript action with env / stdout protocol
-test('test runs', () => {
-  process.env['INPUT_MILLISECONDS'] = '500'
-  const np = process.execPath
-  const ip = path.join(__dirname, '..', 'lib', 'main.js')
-  const options: cp.ExecFileSyncOptions = {
-    env: process.env
-  }
-  console.log(cp.execFileSync(np, [ip], options).toString())
-})
+

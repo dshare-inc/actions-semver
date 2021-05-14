@@ -1,11 +1,33 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'actions-semver'
+description: 'Github actions for Sem-ver'
+author: 'd-share <dev@dshare.co.kr>'
 inputs:
-  milliseconds: # change this
+  version:
+    required: false
+    description: '현재 버전을 입력합니다. 버전이 없는 경우 버전을 찾고, 버전 태그를 찾을 수 없는 경우 0.0.1 으로 시작합니다.'
+  method:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: '반환받을 버전 종류. major, minor, patch, beta, alpha, default (그대로 반환). 또는 숫자 5,4,3,2,1,0.'
+  return_with_prefix:
+    required: false
+    default: 'true'
+    description: '반환 시 버전 태그의 앞 부분 (x:0.0.0) 을 같이 반환합니다.'
+  return_with_suffix:
+    required: false
+    default: 'true'
+    description: '반환 시 버전 태그의 뒷 부분 (0.0.0:x) 을 같이 반환합니다.'
+
+outputs:
+  original_version:
+    description: '이전 버전'
+  version:
+    description: '수정된 버전'
+  prefix:
+    description: '버전의 Prefix'
+  suffix:
+    description: '버전의 Suffix'
+
 runs:
   using: 'node12'
   main: 'dist/index.js'
+
