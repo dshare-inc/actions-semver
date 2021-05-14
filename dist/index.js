@@ -89,7 +89,7 @@ const version = (original) => {
     return Object.assign(Object.assign({}, groups), { prefix: groups.prefix === '' ? null : groups.prefix.replace(':', ''), suffix: groups.suffix === '' ? null : groups.suffix.replace(':', '') });
 };
 exports.version = version;
-const result = (version, options) => `${options.prefix ? version.prefix : ''}${version.version}${options.suffix ? version.suffix : ''}`;
+const result = (version, options) => { var _a, _b; return `${options.prefix && version.prefix !== null ? `${((_a = version.prefix) !== null && _a !== void 0 ? _a : '')}:` : ''}${version.version}${options.suffix && version.suffix !== null ? `:${((_b = version.suffix) !== null && _b !== void 0 ? _b : '')}` : ''}`; };
 exports.result = result;
 
 

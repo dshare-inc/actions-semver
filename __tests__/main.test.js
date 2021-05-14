@@ -106,3 +106,12 @@ describe('Prefix & Suffix', () => {
         });
     }));
 });
+test('Result null check', () => {
+    const given = 'prefix_special-name:1.0.0-alpha.0';
+    const result = util.result(util.version(given), {
+        prefix: true,
+        suffix: false
+    });
+    expect(result)
+        .toStrictEqual('prefix_special-name:1.0.0-alpha.0');
+});

@@ -22,5 +22,5 @@ export const version: (original: string) => {
 export const result: (version: { version: string, prefix: string | null, suffix: string | null }, options: {
   prefix: boolean,
   suffix: boolean
-}) => string = (version, options) => `${options.prefix ? version.prefix : ''}${version.version}${options.suffix ? version.suffix : ''}`;
+}) => string = (version, options) => `${options.prefix && version.prefix !== null ? `${(version.prefix ?? '')}:` : ''}${version.version}${options.suffix && version.suffix !== null ? `:${(version.suffix ?? '')}` : ''}`;
 
