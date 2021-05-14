@@ -1,6 +1,7 @@
 name: 'actions-semver'
 description: 'Github actions for Sem-ver'
 author: 'd-share <dev@dshare.co.kr>'
+icon: box
 inputs:
   version:
     required: false
