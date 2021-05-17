@@ -86,14 +86,14 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.result = exports.version = void 0;
 const version = (original) => {
     var _a;
-    const groups = (_a = original.match(/^(?<prefix>[A-z0-9-_]+:|)(?<version>.*?)(?<suffix>:[A-z0-9-_]+|)$/)) === null || _a === void 0 ? void 0 : _a.groups;
+    const groups = (_a = original.match(/^(?<prefix>[A-z0-9-_]+-|)(?<version>.*?)(?<suffix>-[A-z0-9-_]+|)$/)) === null || _a === void 0 ? void 0 : _a.groups;
     if (groups === undefined) {
         throw new Error(`❌ Invalid Version ${original}`);
     }
-    return Object.assign(Object.assign({}, groups), { prefix: groups.prefix === '' ? null : groups.prefix.replace(':', ''), suffix: groups.suffix === '' ? null : groups.suffix.replace(':', '') });
+    return Object.assign(Object.assign({}, groups), { prefix: groups.prefix === '' ? null : groups.prefix.replace(/-$/, ''), suffix: groups.suffix === '' ? null : groups.suffix.replace(/^-/, '') });
 };
 exports.version = version;
-const result = (version, options) => { var _a, _b; return `${options.prefix && version.prefix !== null ? `${((_a = version.prefix) !== null && _a !== void 0 ? _a : '')}:` : ''}${version.version}${options.suffix && version.suffix !== null ? `:${((_b = version.suffix) !== null && _b !== void 0 ? _b : '')}` : ''}`; };
+const result = (version, options) => { var _a, _b; return `${options.prefix && version.prefix !== null ? `${((_a = version.prefix) !== null && _a !== void 0 ? _a : '')}-` : ''}${version.version}${options.suffix && version.suffix !== null ? `-${((_b = version.suffix) !== null && _b !== void 0 ? _b : '')}` : ''}`; };
 exports.result = result;
 
 
